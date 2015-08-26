@@ -1,27 +1,28 @@
 //
-//  VCUserList.m
+//  VCFriends.m
 //  ACSocial
 //
 //  Created by Alexandre Santos on 26/08/15.
 //  Copyright (c) 2015 Avenue Code. All rights reserved.
 //
 
-#import "VCUserList.h"
+#import "VCFriends.h"
 
-@interface VCUserList ()
+@interface VCFriends ()
 
-@property (nonatomic) NSArray *userNames;
+@property (nonatomic) NSMutableArray *friends;
 
 @end
 
-@implementation VCUserList
+@implementation VCFriends
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Users List";
+    self.title = @"My Friends";
     
-    self.userNames = @[@"Alexandre", @"Felipe", @"Marcelo", @"Eduardo", @"Tiago", @"Thiago", @"João"];
+    // TODO: Load all friends
+    self.friends = [NSMutableArray array];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,13 +39,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return self.userNames.count;
+    return self.friends.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BasicCellID" forIndexPath:indexPath];
     
-    cell.textLabel.text = self.userNames[indexPath.row];
+    cell.textLabel.text = self.friends[indexPath.row];
     
     return cell;
 }

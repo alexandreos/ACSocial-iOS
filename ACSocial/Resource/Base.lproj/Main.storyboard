@@ -12,29 +12,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BasicCellID" textLabel="Us5-Zr-KlC" style="IBUITableViewCellStyleDefault" id="OSe-7d-4xG">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OSe-7d-4xG" id="Il8-VW-BPq">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Us5-Zr-KlC">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="dH1-bU-shy" id="ba9-tj-WXv"/>
                             <outlet property="delegate" destination="dH1-bU-shy" id="zwD-ma-aN0"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="sdW-UK-EuS">
-                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="EV6-Gw-49K"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="EV6-Gw-49K">
+                            <connections>
+                                <action selector="doneButtonTapped:" destination="dH1-bU-shy" id="Oee-lY-ccJ"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bp3-lC-ssb" userLabel="First Responder" sceneMemberID="firstResponder"/>
