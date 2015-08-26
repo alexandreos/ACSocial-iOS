@@ -9,6 +9,7 @@
 #import "VCFriends.h"
 #import "VCUserList.h"
 #import "ACUser.h"
+#import "UserCell.h"
 
 static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 
@@ -57,10 +58,10 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BasicCellID" forIndexPath:indexPath];
+    UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCellID" forIndexPath:indexPath];
 
     ACUser *friend = self.friends[indexPath.row];
-    cell.textLabel.text = friend.name;
+    cell.nameLabel.text = friend.name;
     
     return cell;
 }
