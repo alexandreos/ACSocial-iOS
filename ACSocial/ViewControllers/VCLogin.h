@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  VCLogin.h
 //  ACSocial
 //
 //  Created by Alexandre Santos on 26/08/15.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface VCLogin : UIViewController
 
 
 @end

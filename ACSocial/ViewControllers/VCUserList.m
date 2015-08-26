@@ -29,11 +29,6 @@ static NSString * const CellID = @"UserCell";
     self.userNames = @[@"Alexandre", @"Felipe", @"Marcelo", @"Eduardo", @"Tiago", @"Thiago", @"João"];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -68,6 +63,12 @@ static NSString * const CellID = @"UserCell";
 
 - (void)addFriendButtonTapped:(id)sender {
     NSLog(@"Add Friend tapped!");
+    
+    if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
+        // TODO: Proper implement
+        ACUser *addedFriend = [[ACUser alloc] initWithDictionary:@{@"name":self.userNames[0]}];
+        [self.delegate vcUserList:self didAddFriend:addedFriend];
+    }
 }
 
 @end

@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ACUser.h"
+
+@class VCUserList;
+
+@protocol VCUserListDelegate <NSObject>
+
+- (void)vcUserList:(VCUserList *)vcUserList didAddFriend:(ACUser *)addedFriend;
+
+@end
 
 @interface VCUserList : UITableViewController
+
+@property (nonatomic, weak) id<VCUserListDelegate>delegate;
 
 @end

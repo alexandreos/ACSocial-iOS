@@ -7,8 +7,12 @@
 //
 
 #import "VCFriends.h"
+#import "VCUserList.h"
+#import "ACUser.h"
 
-@interface VCFriends ()
+static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
+
+@interface VCFriends () <VCUserListDelegate>
 
 @property (nonatomic) NSMutableArray *friends;
 
@@ -22,12 +26,22 @@
     self.title = @"My Friends";
     
     // TODO: Load all friends
-    self.friends = [NSMutableArray array];
+    self.friends = [ACUser currentUser].friends ? [[ACUser currentUser].friends mutableCopy] : [NSMutableArray array];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:kVCUserListSegueID]) {
+        UINavigationController *nc = segue.destinationViewController;
+        VCUserList *vcUserList = (VCUserList *)nc.topViewController;
+        
+        // Set the delegate of the User List view controller to this instance
+        vcUserList.delegate = self;
+    }
 }
 
 #pragma mark - Table view data source
@@ -44,10 +58,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BasicCellID" forIndexPath:indexPath];
-    
-    cell.textLabel.text = self.friends[indexPath.row];
+
+    ACUser *friend = self.friends[indexPath.row];
+    cell.textLabel.text = friend.name;
     
     return cell;
+}
+
+#pragma mark - VCUserListDelegate
+
+- (void)vcUserList:(VCUserList *)vcUserList didAddFriend:(NSString *)friendName {
+    [self.friends addObject:friendName];
+    [self.tableView reloadData];
 }
 
 @end

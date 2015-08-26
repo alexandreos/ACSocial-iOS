@@ -77,7 +77,7 @@
                     <navigationItem key="navigationItem" title="Root View Controller" id="SiZ-2h-y80">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="FF0-9f-v5o">
                             <connections>
-                                <segue destination="SCj-YD-suP" kind="presentation" id="Vkf-sS-dR7"/>
+                                <segue destination="SCj-YD-suP" kind="presentation" identifier="VCUserListSegueID" id="Vkf-sS-dR7"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -102,10 +102,10 @@
             </objects>
             <point key="canvasLocation" x="370" y="1140"/>
         </scene>
-        <!--View Controller-->
+        <!--Login-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="VCLogin" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
