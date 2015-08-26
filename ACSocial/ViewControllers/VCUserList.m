@@ -8,6 +8,7 @@
 
 #import "VCUserList.h"
 #import "UserCell.h"
+#import "UIView+IndexPath.h"
 
 static NSString * const CellID = @"UserCell";
 
@@ -52,6 +53,9 @@ static NSString * const CellID = @"UserCell";
     [cell.addFriendButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [cell.addFriendButton addTarget:self action:@selector(addFriendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
+    // Set the index path for later refence when the button is tapped.
+    cell.addFriendButton.indexPath = indexPath;
+    
     return cell;
 }
 
@@ -62,11 +66,10 @@ static NSString * const CellID = @"UserCell";
 }
 
 - (void)addFriendButtonTapped:(id)sender {
-    NSLog(@"Add Friend tapped!");
-    
     if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
-        // TODO: Proper implement
-        ACUser *addedFriend = [[ACUser alloc] initWithDictionary:@{@"name":self.userNames[0]}];
+        // Get the index path from the button
+        UIButton *button = sender;
+        ACUser *addedFriend = [[ACUser alloc] initWithDictionary:@{@"name":self.userNames[button.indexPath.row]}];
         [self.delegate vcUserList:self didAddFriend:addedFriend];
     }
 }

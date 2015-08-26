@@ -69,6 +69,8 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 
 - (void)vcUserList:(VCUserList *)vcUserList didAddFriend:(NSString *)friendName {
     [self.friends addObject:friendName];
+    [ACUser currentUser].friends = [self.friends copy];
+    
     [self.tableView reloadData];
 }
 

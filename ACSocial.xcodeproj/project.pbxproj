@@ -19,6 +19,7 @@
 		8A7EF5F51B8E6395003746EA /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5F31B8E6395003746EA /* UserCell.m */; };
 		8A7EF5F61B8E6395003746EA /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A7EF5F41B8E6395003746EA /* UserCell.xib */; };
 		8A7EF5FA1B8E6AF0003746EA /* ACUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5F91B8E6AF0003746EA /* ACUser.m */; };
+		8A7EF5FF1B8E74DB003746EA /* UIView+IndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5FE1B8E74DB003746EA /* UIView+IndexPath.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,8 @@
 		8A7EF5F81B8E6AF0003746EA /* ACUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACUser.h; sourceTree = "<group>"; };
 		8A7EF5F91B8E6AF0003746EA /* ACUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACUser.m; sourceTree = "<group>"; };
 		8A7EF5FB1B8E6B88003746EA /* ACDictionaryDeserializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDictionaryDeserializable.h; sourceTree = "<group>"; };
+		8A7EF5FD1B8E74DB003746EA /* UIView+IndexPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+IndexPath.h"; sourceTree = "<group>"; };
+		8A7EF5FE1B8E74DB003746EA /* UIView+IndexPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+IndexPath.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,7 @@
 			children = (
 				8A7EF5B51B8E4A97003746EA /* AppDelegate.h */,
 				8A7EF5B61B8E4A97003746EA /* AppDelegate.m */,
+				8A7EF5FC1B8E74A6003746EA /* Utils */,
 				8A7EF5F71B8E6AC8003746EA /* Models */,
 				8A7EF5DD1B8E6349003746EA /* Resource */,
 				8A7EF5E31B8E6349003746EA /* ViewControllers */,
@@ -182,6 +186,15 @@
 				8A7EF5F91B8E6AF0003746EA /* ACUser.m */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		8A7EF5FC1B8E74A6003746EA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8A7EF5FD1B8E74DB003746EA /* UIView+IndexPath.h */,
+				8A7EF5FE1B8E74DB003746EA /* UIView+IndexPath.m */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,6 +304,7 @@
 				8A7EF5EF1B8E634A003746EA /* VCUserList.m in Sources */,
 				8A7EF5F51B8E6395003746EA /* UserCell.m in Sources */,
 				8A7EF5F01B8E634A003746EA /* VCLogin.m in Sources */,
+				8A7EF5FF1B8E74DB003746EA /* UIView+IndexPath.m in Sources */,
 				8A7EF5FA1B8E6AF0003746EA /* ACUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
