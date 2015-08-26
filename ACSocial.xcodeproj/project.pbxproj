@@ -14,6 +14,8 @@
 		8A7EF5BF1B8E4A97003746EA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A7EF5BE1B8E4A97003746EA /* Images.xcassets */; };
 		8A7EF5C21B8E4A97003746EA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A7EF5C01B8E4A97003746EA /* LaunchScreen.xib */; };
 		8A7EF5CE1B8E4A97003746EA /* ACSocialTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5CD1B8E4A97003746EA /* ACSocialTests.m */; };
+		8A7EF5D91B8E4E37003746EA /* VCUserList.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5D81B8E4E37003746EA /* VCUserList.m */; };
+		8A7EF5DC1B8E5D1D003746EA /* VCFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5DB1B8E5D1D003746EA /* VCFriends.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,10 @@
 		8A7EF5C71B8E4A97003746EA /* ACSocialTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ACSocialTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A7EF5CC1B8E4A97003746EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A7EF5CD1B8E4A97003746EA /* ACSocialTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACSocialTests.m; sourceTree = "<group>"; };
+		8A7EF5D71B8E4E37003746EA /* VCUserList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCUserList.h; sourceTree = "<group>"; };
+		8A7EF5D81B8E4E37003746EA /* VCUserList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCUserList.m; sourceTree = "<group>"; };
+		8A7EF5DA1B8E5D1D003746EA /* VCFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCFriends.h; sourceTree = "<group>"; };
+		8A7EF5DB1B8E5D1D003746EA /* VCFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCFriends.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +91,10 @@
 				8A7EF5B61B8E4A97003746EA /* AppDelegate.m */,
 				8A7EF5B81B8E4A97003746EA /* ViewController.h */,
 				8A7EF5B91B8E4A97003746EA /* ViewController.m */,
+				8A7EF5D71B8E4E37003746EA /* VCUserList.h */,
+				8A7EF5D81B8E4E37003746EA /* VCUserList.m */,
+				8A7EF5DA1B8E5D1D003746EA /* VCFriends.h */,
+				8A7EF5DB1B8E5D1D003746EA /* VCFriends.m */,
 				8A7EF5BB1B8E4A97003746EA /* Main.storyboard */,
 				8A7EF5BE1B8E4A97003746EA /* Images.xcassets */,
 				8A7EF5C01B8E4A97003746EA /* LaunchScreen.xib */,
@@ -222,6 +232,8 @@
 				8A7EF5BA1B8E4A97003746EA /* ViewController.m in Sources */,
 				8A7EF5B71B8E4A97003746EA /* AppDelegate.m in Sources */,
 				8A7EF5B41B8E4A97003746EA /* main.m in Sources */,
+				8A7EF5DC1B8E5D1D003746EA /* VCFriends.m in Sources */,
+				8A7EF5D91B8E4E37003746EA /* VCUserList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
