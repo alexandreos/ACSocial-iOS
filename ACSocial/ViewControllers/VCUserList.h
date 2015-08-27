@@ -13,6 +13,8 @@
 
 @protocol VCUserListDelegate <NSObject>
 
+@optional
+
 - (void)vcUserList:(VCUserList *)vcUserList didAddFriend:(ACUser *)addedFriend;
 
 @end

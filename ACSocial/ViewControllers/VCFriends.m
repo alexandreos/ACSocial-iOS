@@ -11,7 +11,7 @@
 #import "ACUser.h"
 #import "UserCell.h"
 #import "VCLogin.h"
-#import <UIImage+AFNetworking.h>
+#import <UIImageView+AFNetworking.h>
 
 static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 
@@ -75,6 +75,7 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 
     ACUser *friend = self.friends[indexPath.row];
     cell.nameLabel.text = friend.name;
+    [cell.userImageView setImageWithURL:friend.pictureURL placeholderImage:[UIImage imageNamed:@"placeholder"]];
     
     return cell;
 }
