@@ -21,6 +21,7 @@
 		8A7EF5F61B8E6395003746EA /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A7EF5F41B8E6395003746EA /* UserCell.xib */; };
 		8A7EF5FA1B8E6AF0003746EA /* ACUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5F91B8E6AF0003746EA /* ACUser.m */; };
 		8A7EF5FF1B8E74DB003746EA /* UIView+IndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5FE1B8E74DB003746EA /* UIView+IndexPath.m */; };
+		F18098C8F566D80DA5919541 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B4FB5FAB2B8208B022DD6C /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		40561C728B4D49144DC59A10 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		659285039B3D1D0B971F3F9E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		8A3EDF231B8F8C0500D88713 /* VCLogin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCLogin.xib; sourceTree = "<group>"; };
 		8A7EF5AE1B8E4A97003746EA /* ACSocial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACSocial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A7EF5B21B8E4A97003746EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,6 +63,7 @@
 		8A7EF5FB1B8E6B88003746EA /* ACDictionaryDeserializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDictionaryDeserializable.h; sourceTree = "<group>"; };
 		8A7EF5FD1B8E74DB003746EA /* UIView+IndexPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+IndexPath.h"; sourceTree = "<group>"; };
 		8A7EF5FE1B8E74DB003746EA /* UIView+IndexPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+IndexPath.m"; sourceTree = "<group>"; };
+		F6B4FB5FAB2B8208B022DD6C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F18098C8F566D80DA5919541 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +91,8 @@
 				8A7EF5B01B8E4A97003746EA /* ACSocial */,
 				8A7EF5CA1B8E4A97003746EA /* ACSocialTests */,
 				8A7EF5AF1B8E4A97003746EA /* Products */,
+				CF2211B2B720B84B7C09E44F /* Pods */,
+				E209914FAC46CA7C35BF27EB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -200,6 +207,23 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		CF2211B2B720B84B7C09E44F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				40561C728B4D49144DC59A10 /* Pods.debug.xcconfig */,
+				659285039B3D1D0B971F3F9E /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E209914FAC46CA7C35BF27EB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F6B4FB5FAB2B8208B022DD6C /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -207,9 +231,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A7EF5D11B8E4A97003746EA /* Build configuration list for PBXNativeTarget "ACSocial" */;
 			buildPhases = (
+				C903333D134E709A88DD8F8F /* Check Pods Manifest.lock */,
 				8A7EF5AA1B8E4A97003746EA /* Sources */,
 				8A7EF5AB1B8E4A97003746EA /* Frameworks */,
 				8A7EF5AC1B8E4A97003746EA /* Resources */,
+				6A3739A19841B50AAE6EDA3B /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -296,6 +322,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6A3739A19841B50AAE6EDA3B /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C903333D134E709A88DD8F8F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8A7EF5AA1B8E4A97003746EA /* Sources */ = {
@@ -433,6 +492,7 @@
 		};
 		8A7EF5D21B8E4A97003746EA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40561C728B4D49144DC59A10 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ACSocial/Info.plist;
@@ -443,6 +503,7 @@
 		};
 		8A7EF5D31B8E4A97003746EA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 659285039B3D1D0B971F3F9E /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ACSocial/Info.plist;

@@ -11,6 +11,7 @@
 #import "ACUser.h"
 #import "UserCell.h"
 #import "VCLogin.h"
+#import <UIImage+AFNetworking.h>
 
 static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 
