@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A3EDF241B8F8C0500D88713 /* VCLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A3EDF231B8F8C0500D88713 /* VCLogin.xib */; };
 		8A7EF5B41B8E4A97003746EA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5B31B8E4A97003746EA /* main.m */; };
 		8A7EF5B71B8E4A97003746EA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5B61B8E4A97003746EA /* AppDelegate.m */; };
 		8A7EF5CE1B8E4A97003746EA /* ACSocialTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF5CD1B8E4A97003746EA /* ACSocialTests.m */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8A3EDF231B8F8C0500D88713 /* VCLogin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCLogin.xib; sourceTree = "<group>"; };
 		8A7EF5AE1B8E4A97003746EA /* ACSocial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACSocial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A7EF5B21B8E4A97003746EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A7EF5B31B8E4A97003746EA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				8A7EF5DE1B8E6349003746EA /* LaunchScreen.xib */,
 				8A7EF5E01B8E6349003746EA /* Main.storyboard */,
 				8A7EF5E21B8E6349003746EA /* Images.xcassets */,
+				8A3EDF231B8F8C0500D88713 /* VCLogin.xib */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 				8A7EF5F61B8E6395003746EA /* UserCell.xib in Resources */,
 				8A7EF5ED1B8E634A003746EA /* Images.xcassets in Resources */,
 				8A7EF5EB1B8E634A003746EA /* LaunchScreen.xib in Resources */,
+				8A3EDF241B8F8C0500D88713 /* VCLogin.xib in Resources */,
 				8A7EF5EC1B8E634A003746EA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -500,6 +504,7 @@
 				8A7EF5D31B8E4A97003746EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8A7EF5D41B8E4A97003746EA /* Build configuration list for PBXNativeTarget "ACSocialTests" */ = {
 			isa = XCConfigurationList;
@@ -508,6 +513,7 @@
 				8A7EF5D61B8E4A97003746EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

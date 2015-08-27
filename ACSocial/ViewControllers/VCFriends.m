@@ -10,10 +10,11 @@
 #import "VCUserList.h"
 #import "ACUser.h"
 #import "UserCell.h"
+#import "VCLogin.h"
 
 static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 
-@interface VCFriends () <VCUserListDelegate>
+@interface VCFriends () <VCUserListDelegate, VCLoginDelegate>
 
 @property (nonatomic) NSMutableArray *friends;
 
@@ -25,14 +26,17 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
     [super viewDidLoad];
     
     self.title = @"My Friends";
-    
-    // TODO: Load all friends
-    self.friends = [ACUser currentUser].friends ? [[ACUser currentUser].friends mutableCopy] : [NSMutableArray array];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if([ACUser currentUser] == nil) {
+        // Present Login screen
+        VCLogin *vcLogin = [VCLogin instanceFromNib];
+        vcLogin.delegate = self;
+        [self presentViewController:vcLogin animated:NO completion:nil];
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -43,6 +47,14 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
         // Set the delegate of the User List view controller to this instance
         vcUserList.delegate = self;
     }
+}
+
+#pragma mark - Data Loading
+
+- (void)loadFriends {
+    // TODO: Load all friends
+    self.friends = [ACUser currentUser].friends ? [[ACUser currentUser].friends mutableCopy] : [NSMutableArray array];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - Table view data source
@@ -73,6 +85,15 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
     [ACUser currentUser].friends = [self.friends copy];
     
     [self.tableView reloadData];
+}
+
+#pragma mark - VCLoginDelegate
+
+- (void)vcLogin:(VCLogin *)vcLogin didLoginUser:(ACUser *)user {
+    [vcLogin dismissViewControllerAnimated:YES completion:nil];
+    
+    // Reload data after login
+    [self loadFriends];
 }
 
 @end
