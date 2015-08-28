@@ -13,7 +13,7 @@
 @property (nonatomic) NSString *identifier;
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *email;
-@property (nonatomic) NSURL *pictureURL;
+@property (nonatomic, readonly) NSURL *pictureURL;
 
 @property (nonatomic) NSArray *friends;
 

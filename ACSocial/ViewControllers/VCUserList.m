@@ -11,6 +11,7 @@
 #import "UIView+IndexPath.h"
 #import <UIImageView+AFNetworking.h>
 #import <SVProgressHUD.h>
+#import "ACSocialAPI.h"
 
 static NSString * const CellID = @"UserCell";
 
@@ -29,15 +30,16 @@ static NSString * const CellID = @"UserCell";
     
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([UserCell class]) bundle:[NSBundle mainBundle]] forCellReuseIdentifier:CellID];
     
-    // TODO: Load users from the REST API
-    self.allUsers = @[ [[ACUser alloc] initWithDictionary:@{@"name":@"Alexandre"}],
-                       [[ACUser alloc] initWithDictionary:@{@"name":@"José"}],
-                       [[ACUser alloc] initWithDictionary:@{@"name":@"Carlos"}],
-                       [[ACUser alloc] initWithDictionary:@{@"name":@"Tiago"}],
-                       [[ACUser alloc] initWithDictionary:@{@"name":@"Pedro"}],
-                       [[ACUser alloc] initWithDictionary:@{@"name":@"Luis"}],
-                       [[ACUser alloc] initWithDictionary:@{@"name":@"Thiago"}],
-                       [[ACUser alloc] initWithDictionary:@{@"name":@"Marcelo"}]];
+    // Load users from the REST API
+    [ACSocialAPIService getAllUsersWithcompletion:^(NSArray *allUsers, NSError *error) {
+        if(allUsers) {
+            self.allUsers = allUsers;
+            [self.tableView reloadData];
+        }
+        else {
+            // Show some error
+        }
+    }];
 }
 
 #pragma mark - Table view data source
@@ -89,11 +91,15 @@ static NSString * const CellID = @"UserCell";
         UIButton *button = sender;
         ACUser *addedFriend = self.allUsers[button.indexPath.row];
         
-        [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"Added friend: %@", addedFriend.name]];
-        
-        if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
-            [self.delegate vcUserList:self didAddFriend:addedFriend];
-        }
+        [SVProgressHUD showWithStatus:@"Inviting friend"];
+        [ACSocialAPIService inviteFriend:addedFriend completion:^(NSArray *friends, NSError *error) {
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"Added friend: %@", addedFriend.name]];
+            
+            if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
+                [self.delegate vcUserList:self didAddFriend:addedFriend];
+            }
+        }];
     }
 }
 

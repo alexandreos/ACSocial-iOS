@@ -88,4 +88,18 @@
 
 }
 
++ (AFHTTPRequestOperation *)inviteFriend:(ACUser *)friendUser completion:(void (^)(NSArray *, NSError *))completion {
+    ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
+    return [manager POST:[NSString stringWithFormat:@"/friendships/%@", friendUser.identifier] parameters:nil success:^void(AFHTTPRequestOperation *operation, id JSON) {
+        if(completion) {
+            completion(JSON, nil);
+        }
+        
+    } failure:^void(AFHTTPRequestOperation * operation, NSError *error) {
+        if(completion) {
+            completion(nil, error);
+        }
+    }];
+}
+
 @end

@@ -20,4 +20,6 @@
 
 + (AFHTTPRequestOperation *)getAllFriendsWithcompletion:(void (^)(NSArray *friends, NSError *error))completion;
 
++ (AFHTTPRequestOperation *)inviteFriend:(ACUser *)friendUser completion:(void (^)(NSArray *friends, NSError *error))completion;
+
 @end

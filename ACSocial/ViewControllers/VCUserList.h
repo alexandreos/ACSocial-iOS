@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ACUser.h"
 
+@class ACUser;
 @class VCUserList;
 
 @protocol VCUserListDelegate <NSObject>

@@ -7,10 +7,17 @@
 //
 
 #import "ACUser.h"
+#import <NSString+MD5.h>
 
 static ACUser *_currentUser = nil;
 
+@interface ACUser ()
+
+@end
+
 @implementation ACUser
+@synthesize pictureURL = _pictureURL;
+
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];
@@ -18,16 +25,6 @@ static ACUser *_currentUser = nil;
         self.identifier = dictionary[@"_id"];
         self.name = dictionary[@"name"];
         self.email = dictionary[@"email"];
-        
-        self.pictureURL = [NSURL URLWithString:dictionary[@"picture_url"]];
-        
-        NSArray *friendsDicts = dictionary[@"friends"];
-        NSMutableArray *friends = [NSMutableArray arrayWithCapacity:[friendsDicts count]];
-        for (NSDictionary *friendDict in friendsDicts) {
-            ACUser *friendUser = [[ACUser alloc] initWithDictionary:friendDict];
-            [friends addObject:friendUser];
-        }
-        self.friends = friends.count > 0 ? [friends copy] : nil;
     }
     
     return self;
@@ -41,6 +38,20 @@ static ACUser *_currentUser = nil;
     if(_currentUser != user) {
         _currentUser = user;
     }
+}
+
+#pragma mark - Properties
+
+- (NSURL *)pictureURL {
+    
+    // Lazy load a picture URL
+    if(_pictureURL == nil) {
+        NSString *hashedUserID = [self.email MD5Digest];
+        NSString *gravatarURLString = [NSString stringWithFormat:@"http://www.gravatar.com/avatar/%@.jpg?s=100", hashedUserID];
+        NSURL *gravatarURL = [NSURL URLWithString:gravatarURLString];
+        _pictureURL = gravatarURL;
+    }
+    return _pictureURL;
 }
 
 @end
