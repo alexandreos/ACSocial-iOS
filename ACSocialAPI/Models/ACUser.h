@@ -8,6 +8,12 @@
 
 #import "ACDictionaryDeserializable.h"
 
+typedef NS_ENUM(NSUInteger, ACFriendRequestStatus) {
+    ACFriendRequestStatusUnknown = 0,
+    ACFriendRequestStatusSent,
+    ACFriendRequestStatusReceived
+};
+
 @interface ACUser : NSObject <ACDictionaryDeserializable>
 
 @property (nonatomic) NSString *identifier;
@@ -16,6 +22,8 @@
 @property (nonatomic, readonly) NSURL *pictureURL;
 
 @property (nonatomic) NSArray *friends;
+
+@property (nonatomic) ACFriendRequestStatus friendRequestStatus;
 
 /**
  The current user signed-in in the app.

@@ -30,8 +30,10 @@ static NSString * const CellID = @"UserCell";
     
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([UserCell class]) bundle:[NSBundle mainBundle]] forCellReuseIdentifier:CellID];
     
+    [SVProgressHUD show];
     // Load users from the REST API
-    [ACSocialAPIService getAllUsersWithcompletion:^(NSArray *allUsers, NSError *error) {
+    [ACSocialAPIService getAllUsersWithStatusAndCompletion:^(NSArray *allUsers, NSError *error) {
+        [SVProgressHUD dismiss];
         if(allUsers) {
             self.allUsers = allUsers;
             [self.tableView reloadData];
@@ -73,6 +75,15 @@ static NSString * const CellID = @"UserCell";
     [cell.addFriendButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [cell.addFriendButton addTarget:self action:@selector(addFriendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
+    if(user.friendRequestStatus == ACFriendRequestStatusSent) {
+        cell.addFriendButton.hidden = YES;
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.addFriendButton.hidden = NO;
+    }
+    
     // Set the index path for later refence when the button is tapped.
     cell.addFriendButton.indexPath = indexPath;
     
@@ -92,12 +103,19 @@ static NSString * const CellID = @"UserCell";
         ACUser *addedFriend = self.allUsers[button.indexPath.row];
         
         [SVProgressHUD showWithStatus:@"Inviting friend"];
-        [ACSocialAPIService inviteFriend:addedFriend completion:^(NSArray *friends, NSError *error) {
-            [SVProgressHUD dismiss];
-            [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"Added friend: %@", addedFriend.name]];
-            
-            if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
-                [self.delegate vcUserList:self didAddFriend:addedFriend];
+        [ACSocialAPIService inviteFriend:addedFriend completion:^(BOOL success, NSError *error) {
+            if(success) {
+                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"Invite sent to %@", addedFriend.name]];
+                
+                addedFriend.friendRequestStatus = ACFriendRequestStatusSent;
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                
+                if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
+                    [self.delegate vcUserList:self didAddFriend:addedFriend];
+                }
+            }
+            else {
+                [SVProgressHUD dismiss];
             }
         }];
     }

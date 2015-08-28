@@ -34,7 +34,7 @@
     return requestOperation;
 }
 
-+ (AFHTTPRequestOperation *)getCurrentUserWithcompletion:(void (^)(ACUser *, NSError *))completion {
++ (AFHTTPRequestOperation *)getCurrentUserWithCompletion:(void (^)(ACUser *, NSError *))completion {
     ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
     return [manager GET:@"/users/me" parameters:nil success:^void(AFHTTPRequestOperation *operation, NSDictionary *dictionary) {
         ACUser *user = [[ACUser alloc] initWithDictionary:dictionary];
@@ -49,7 +49,7 @@
     }];
 }
 
-+ (AFHTTPRequestOperation *)getAllUsersWithcompletion:(void (^)(NSArray *allUsers, NSError *error))completion {
++ (AFHTTPRequestOperation *)getAllUsersWithCompletion:(void (^)(NSArray *allUsers, NSError *error))completion {
     ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
     return [manager GET:@"/users" parameters:nil success:^void(AFHTTPRequestOperation *operation, NSArray *userDicts) {
         if(completion) {
@@ -68,7 +68,43 @@
     }];
 }
 
-+ (AFHTTPRequestOperation *)getAllFriendsWithcompletion:(void (^)(NSArray *friends, NSError *error))completion {
++ (AFHTTPRequestOperation *)getAllUsersWithStatusAndCompletion:(void (^)(NSArray *allUsers, NSError *error))completion {
+    ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
+    return [manager GET:@"/users" parameters:nil success:^void(AFHTTPRequestOperation *operation, NSArray *userDicts) {
+        if(completion) {
+            NSMutableArray *users = [NSMutableArray arrayWithCapacity:userDicts.count];
+            for (NSDictionary *dict in userDicts) {
+                ACUser *user = [[ACUser alloc] initWithDictionary:dict];
+                [users addObject:user];
+            }
+            
+            // Fetch all invites sent and received
+            [self friedRequestsReceivedWithCompletion:^(NSArray *requestDicts, NSError *error) {
+                for (NSDictionary *requestDict in requestDicts) {
+                    NSString *identifier = requestDict[@"userRequester"][@"_id"];
+                    ACUser *friend = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"identifier = %@", identifier]] firstObject];
+                    friend.friendRequestStatus = ACFriendRequestStatusReceived;
+                }
+                [self friendInvitedWithCompletion:^(NSArray *inviteDicts, NSError *error) {
+                    for (NSDictionary *inviteDict in inviteDicts) {
+                        NSString *identifier = inviteDict[@"userRequested"][@"_id"];
+                        ACUser *friend = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"identifier = %@", identifier]] firstObject];
+                        friend.friendRequestStatus = ACFriendRequestStatusSent;
+                    }
+                    
+                    completion(users, nil);
+                }];
+            }];
+        }
+        
+    } failure:^void(AFHTTPRequestOperation * operation, NSError *error) {
+        if(completion) {
+            completion(nil, error);
+        }
+    }];
+}
+
++ (AFHTTPRequestOperation *)getAllFriendsWithCompletion:(void (^)(NSArray *friends, NSError *error))completion {
     ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
     return [manager GET:@"/friendships/me" parameters:nil success:^void(AFHTTPRequestOperation *operation, NSArray *friendDicts) {
         if(completion) {
@@ -88,11 +124,53 @@
 
 }
 
-+ (AFHTTPRequestOperation *)inviteFriend:(ACUser *)friendUser completion:(void (^)(NSArray *, NSError *))completion {
++ (AFHTTPRequestOperation *)inviteFriend:(ACUser *)friendUser completion:(void (^)(BOOL, NSError *))completion {
     ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
     return [manager POST:[NSString stringWithFormat:@"/friendships/%@", friendUser.identifier] parameters:nil success:^void(AFHTTPRequestOperation *operation, id JSON) {
         if(completion) {
-            completion(JSON, nil);
+            completion(YES, nil);
+        }
+        
+    } failure:^void(AFHTTPRequestOperation * operation, NSError *error) {
+        if(completion) {
+            completion(NO, error);
+        }
+    }];
+}
+
++ (AFHTTPRequestOperation *)acceptFriend:(ACUser *)friendUser completion:(void (^)(BOOL success, NSError *error))completion {
+    ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
+    return [manager PUT:[NSString stringWithFormat:@"/friendships/%@", friendUser.identifier] parameters:nil success:^void(AFHTTPRequestOperation *operation, id JSON) {
+        if(completion) {
+            completion(YES, nil);
+        }
+        
+    } failure:^void(AFHTTPRequestOperation * operation, NSError *error) {
+        if(completion) {
+            completion(NO, error);
+        }
+    }];
+}
+
++ (AFHTTPRequestOperation *)friedRequestsReceivedWithCompletion:(void (^)(NSArray *, NSError *))completion {
+    ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
+    return [manager GET:@"/friendships/requests" parameters:nil success:^void(AFHTTPRequestOperation *operation, NSArray *requestDicts) {
+        if(completion) {
+            completion(requestDicts, nil);
+        }
+        
+    } failure:^void(AFHTTPRequestOperation * operation, NSError *error) {
+        if(completion) {
+            completion(nil, error);
+        }
+    }];
+}
+
++ (AFHTTPRequestOperation *)friendInvitedWithCompletion:(void (^)(NSArray *, NSError *))completion {
+    ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
+    return [manager GET:@"/friendships/requested" parameters:nil success:^void(AFHTTPRequestOperation *operation, NSArray *requestDicts) {
+        if(completion) {
+            completion(requestDicts, nil);
         }
         
     } failure:^void(AFHTTPRequestOperation * operation, NSError *error) {

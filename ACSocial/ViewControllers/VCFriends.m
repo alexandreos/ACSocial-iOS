@@ -17,8 +17,6 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 
 @interface VCFriends () <VCUserListDelegate, VCLoginDelegate>
 
-@property (nonatomic) NSMutableArray *friends;
-
 @end
 
 @implementation VCFriends
@@ -54,8 +52,8 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 
 - (void)loadFriends {
     // Load all friends
-    [ACSocialAPIService getAllFriendsWithcompletion:^(NSArray *friends, NSError *error) {
-        self.friends = friends ? [friends mutableCopy] : [[ACUser currentUser].friends mutableCopy];
+    [ACSocialAPIService getAllFriendsWithCompletion:^(NSArray *friends, NSError *error) {
+        [ACUser currentUser].friends = friends;
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }];
 }
@@ -69,13 +67,13 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return self.friends.count;
+    return [ACUser currentUser].friends.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCellID" forIndexPath:indexPath];
 
-    ACUser *friend = self.friends[indexPath.row];
+    ACUser *friend = [ACUser currentUser].friends[indexPath.row];
     cell.nameLabel.text = friend.name;
     [cell.userImageView setImageWithURL:friend.pictureURL placeholderImage:[UIImage imageNamed:@"placeholder"]];
     
@@ -85,10 +83,8 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 #pragma mark - VCUserListDelegate
 
 - (void)vcUserList:(VCUserList *)vcUserList didAddFriend:(NSString *)friendName {
-    [self.friends addObject:friendName];
-    [ACUser currentUser].friends = [self.friends copy];
-    
-    [self.tableView reloadData];
+    // Reload data after inviting/accepting a friend
+    [self loadFriends];
 }
 
 #pragma mark - VCLoginDelegate

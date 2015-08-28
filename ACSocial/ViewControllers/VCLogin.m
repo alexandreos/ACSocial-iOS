@@ -36,7 +36,7 @@
     [ACSocialAPIService loginWithUsername:self.emailTextField.text password:self.passwordTextField.text completion:^(BOOL success, NSError *error) {
         if(success) {
             // Load current user
-            [ACSocialAPIService getCurrentUserWithcompletion:^(ACUser *user, NSError *error) {
+            [ACSocialAPIService getCurrentUserWithCompletion:^(ACUser *user, NSError *error) {
                 [SVProgressHUD dismiss];
                 if(user) {
                     // Success

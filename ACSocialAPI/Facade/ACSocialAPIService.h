@@ -14,12 +14,19 @@
 
 + (AFHTTPRequestOperation *)loginWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, NSError *error))completion;
 
-+ (AFHTTPRequestOperation *)getCurrentUserWithcompletion:(void (^)(ACUser *user, NSError *error))completion;
++ (AFHTTPRequestOperation *)getCurrentUserWithCompletion:(void (^)(ACUser *user, NSError *error))completion;
 
-+ (AFHTTPRequestOperation *)getAllUsersWithcompletion:(void (^)(NSArray *allUsers, NSError *error))completion;
++ (AFHTTPRequestOperation *)getAllUsersWithCompletion:(void (^)(NSArray *allUsers, NSError *error))completion;
 
-+ (AFHTTPRequestOperation *)getAllFriendsWithcompletion:(void (^)(NSArray *friends, NSError *error))completion;
++ (AFHTTPRequestOperation *)getAllUsersWithStatusAndCompletion:(void (^)(NSArray *allUsers, NSError *error))completion;
 
-+ (AFHTTPRequestOperation *)inviteFriend:(ACUser *)friendUser completion:(void (^)(NSArray *friends, NSError *error))completion;
++ (AFHTTPRequestOperation *)getAllFriendsWithCompletion:(void (^)(NSArray *friends, NSError *error))completion;
+
++ (AFHTTPRequestOperation *)inviteFriend:(ACUser *)friendUser completion:(void (^)(BOOL success, NSError *error))completion;
+
++ (AFHTTPRequestOperation *)acceptFriend:(ACUser *)friendUser completion:(void (^)(BOOL success, NSError *error))completion;
+
++ (AFHTTPRequestOperation *)friendInvitedWithCompletion:(void (^)(NSArray *inviteDicts, NSError *error))completion;
++ (AFHTTPRequestOperation *)friedRequestsReceivedWithCompletion:(void (^)(NSArray *requestDicts, NSError *error))completion;
 
 @end
