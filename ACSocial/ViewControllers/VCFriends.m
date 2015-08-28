@@ -8,10 +8,10 @@
 
 #import "VCFriends.h"
 #import "VCUserList.h"
-#import "ACUser.h"
 #import "UserCell.h"
 #import "VCLogin.h"
 #import <UIImageView+AFNetworking.h>
+#import "ACSocialAPI.h"
 
 static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 
@@ -53,9 +53,11 @@ static NSString * const kVCUserListSegueID = @"VCUserListSegueID";
 #pragma mark - Data Loading
 
 - (void)loadFriends {
-    // TODO: Load all friends
-    self.friends = [ACUser currentUser].friends ? [[ACUser currentUser].friends mutableCopy] : [NSMutableArray array];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    // Load all friends
+    [ACSocialAPIService getAllFriendsWithcompletion:^(NSArray *friends, NSError *error) {
+        self.friends = friends ? [friends mutableCopy] : [[ACUser currentUser].friends mutableCopy];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    }];
 }
 
 #pragma mark - Table view data source

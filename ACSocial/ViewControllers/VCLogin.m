@@ -7,7 +7,8 @@
 //
 
 #import "VCLogin.h"
-#import "ACUser.h"
+#import "ACSocialAPI.h"
+#import <SVProgressHUD.h>
 
 @interface VCLogin () <UITextFieldDelegate>
 
@@ -30,26 +31,39 @@
 #pragma mark - UI Actions
 
 - (IBAction)loginButtonTapped:(id)sender {
-    // TODO: Login using rest API
-    // Just create a fake user for now
-    ACUser *user = [[ACUser alloc] init];
-    user.name = @"Alexandre Santos";
-    user.email = @"asantos@avenuecode.com";
-    user.pictureURL = [NSURL URLWithString:@"https://www.gravatar.com/avatar/d97d62f942fce0f98e44ae91dacd703c?s=64&d=identicon&r=PG"];
+    
+    [SVProgressHUD show];
+    [ACSocialAPIService loginWithUsername:self.emailTextField.text password:self.passwordTextField.text completion:^(BOOL success, NSError *error) {
+        if(success) {
+            // Load current user
+            [ACSocialAPIService getCurrentUserWithcompletion:^(ACUser *user, NSError *error) {
+                [SVProgressHUD dismiss];
+                if(user) {
+                    // Success
+                    if([self.delegate respondsToSelector:@selector(vcLogin:didLoginUser:)]) {
+                        [self.delegate vcLogin:self didLoginUser:user];
+                    }
+                }
+                else {
+                    [self showAlertWithError:error];
+                }
+            }];
+        }
+        else {
+            [SVProgressHUD dismiss];
+            [self showAlertWithError:error];
+        }
 
-    // Add 1 friend
-    ACUser *friend = [[ACUser alloc] init];
-    friend.name = @"Amir Razmara";
-    friend.email = @"amir@avenuecode.com";
-    friend.pictureURL = [NSURL URLWithString:@"https://ssl.gstatic.com/s2/profiles/images/silhouette48.png"];
-    
-    user.friends = @[friend];
-    
-    [ACUser setCurrentUser:user];
-    
-    if([self.delegate respondsToSelector:@selector(vcLogin:didLoginUser:)]) {
-        [self.delegate vcLogin:self didLoginUser:user];
-    }
+    }];
+}
+
+#pragma mark - Private Method
+
+- (void)showAlertWithError:(NSError *)error {
+    // Some error happened, let's display an alert
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops" message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate

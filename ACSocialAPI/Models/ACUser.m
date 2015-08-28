@@ -15,8 +15,10 @@ static ACUser *_currentUser = nil;
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];
     if(self) {
+        self.identifier = dictionary[@"_id"];
         self.name = dictionary[@"name"];
         self.email = dictionary[@"email"];
+        
         self.pictureURL = [NSURL URLWithString:dictionary[@"picture_url"]];
         
         NSArray *friendsDicts = dictionary[@"friends"];
