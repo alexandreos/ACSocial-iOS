@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class ACUser;
+
 @interface UserCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
+@property (weak, nonatomic) IBOutlet UIButton *actionButton;
+
+-(void)setupWithUser:(ACUser *)user;
 
 @end

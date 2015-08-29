@@ -11,7 +11,8 @@
 typedef NS_ENUM(NSUInteger, ACFriendRequestStatus) {
     ACFriendRequestStatusUnknown = 0,
     ACFriendRequestStatusSent,
-    ACFriendRequestStatusReceived
+    ACFriendRequestStatusReceived,
+    ACFriendRequestStatusAccepted,
 };
 
 @interface ACUser : NSObject <ACDictionaryDeserializable>

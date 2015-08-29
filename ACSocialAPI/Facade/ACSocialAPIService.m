@@ -79,16 +79,14 @@
             }
             
             // Fetch all invites sent and received
-            [self friedRequestsReceivedWithCompletion:^(NSArray *requestDicts, NSError *error) {
-                for (NSDictionary *requestDict in requestDicts) {
-                    NSString *identifier = requestDict[@"userRequester"][@"_id"];
-                    ACUser *friend = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"identifier = %@", identifier]] firstObject];
+            [self friedRequestsReceivedWithCompletion:^(NSArray *friendRequestsReceived, NSError *error) {
+                for (ACUser *friendRequestReceived in friendRequestsReceived) {
+                    ACUser *friend = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"identifier = %@", friendRequestReceived.identifier]] firstObject];
                     friend.friendRequestStatus = ACFriendRequestStatusReceived;
                 }
-                [self friendInvitedWithCompletion:^(NSArray *inviteDicts, NSError *error) {
-                    for (NSDictionary *inviteDict in inviteDicts) {
-                        NSString *identifier = inviteDict[@"userRequested"][@"_id"];
-                        ACUser *friend = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"identifier = %@", identifier]] firstObject];
+                [self friendInvitedWithCompletion:^(NSArray *invitedFriends, NSError *error) {
+                    for (ACUser *invitedFriend in invitedFriends) {
+                        ACUser *friend = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"identifier = %@", invitedFriend.identifier]] firstObject];
                         friend.friendRequestStatus = ACFriendRequestStatusSent;
                     }
                     
@@ -110,7 +108,7 @@
         if(completion) {
             NSMutableArray *friends = [NSMutableArray arrayWithCapacity:friendDicts.count];
             for (NSDictionary *dict in friendDicts) {
-                ACUser *friend = [[ACUser alloc] initWithDictionary:dict];
+                ACUser *friend = [[ACUser alloc] initWithDictionary:dict[@"user"]];
                 [friends addObject:friend];
             }
             completion(friends, nil);
@@ -156,7 +154,13 @@
     ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
     return [manager GET:@"/friendships/requests" parameters:nil success:^void(AFHTTPRequestOperation *operation, NSArray *requestDicts) {
         if(completion) {
-            completion(requestDicts, nil);
+            NSMutableArray *friends = [NSMutableArray arrayWithCapacity:requestDicts.count];
+            for (NSDictionary *dict in requestDicts) {
+                ACUser *friend = [[ACUser alloc] initWithDictionary:dict[@"userRequester"]];
+                friend.friendRequestStatus = ACFriendRequestStatusReceived;
+                [friends addObject:friend];
+            }
+            completion(friends, nil);
         }
         
     } failure:^void(AFHTTPRequestOperation * operation, NSError *error) {
@@ -170,7 +174,13 @@
     ACSocialAPIRequestOperationManager *manager = [ACSocialAPIRequestOperationManager sharedManager];
     return [manager GET:@"/friendships/requested" parameters:nil success:^void(AFHTTPRequestOperation *operation, NSArray *requestDicts) {
         if(completion) {
-            completion(requestDicts, nil);
+            NSMutableArray *friends = [NSMutableArray arrayWithCapacity:requestDicts.count];
+            for (NSDictionary *dict in requestDicts) {
+                ACUser *friend = [[ACUser alloc] initWithDictionary:dict[@"userRequested"]];
+                friend.friendRequestStatus = ACFriendRequestStatusSent;
+                [friends addObject:friend];
+            }
+            completion(friends, nil);
         }
         
     } failure:^void(AFHTTPRequestOperation * operation, NSError *error) {

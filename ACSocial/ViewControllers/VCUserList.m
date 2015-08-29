@@ -12,8 +12,11 @@
 #import <UIImageView+AFNetworking.h>
 #import <SVProgressHUD.h>
 #import "ACSocialAPI.h"
+#import "UIAlertController+Error.h"
 
-static NSString * const CellID = @"UserCell";
+// Cell IDs
+static NSString * const UserCellID = @"UserCellID";
+static NSString * const FriendInviteCellID = @"FriendInviteCellID";
 
 @interface VCUserList ()
 
@@ -28,18 +31,17 @@ static NSString * const CellID = @"UserCell";
     
     self.title = @"All Users";
     
-    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([UserCell class]) bundle:[NSBundle mainBundle]] forCellReuseIdentifier:CellID];
-    
     [SVProgressHUD show];
     // Load users from the REST API
     [ACSocialAPIService getAllUsersWithStatusAndCompletion:^(NSArray *allUsers, NSError *error) {
         [SVProgressHUD dismiss];
         if(allUsers) {
             self.allUsers = allUsers;
-            [self.tableView reloadData];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         else {
             // Show some error
+            [self presentViewController:[UIAlertController alertControllerWithError:error] animated:YES completion:nil];
         }
     }];
 }
@@ -61,31 +63,25 @@ static NSString * const CellID = @"UserCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    UserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellID forIndexPath:indexPath];
-    
     ACUser *user = self.allUsers[indexPath.row];
-    
-    // Setup UserCell properly.
-    cell.nameLabel.text = user.name;
 
-    [cell.userImageView setImageWithURL:user.pictureURL placeholderImage:[UIImage imageNamed:@"placeholder"]];
-    
-    // Clear target and add it again
-    [cell.addFriendButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
-    [cell.addFriendButton addTarget:self action:@selector(addFriendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
-    if(user.friendRequestStatus == ACFriendRequestStatusSent) {
-        cell.addFriendButton.hidden = YES;
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    UserCell *cell = nil;
+    if(user.friendRequestStatus == ACFriendRequestStatusReceived) {
+        cell = [tableView dequeueReusableCellWithIdentifier:FriendInviteCellID forIndexPath:indexPath];
+
+        // Add target action to button
+        [cell.actionButton addTarget:self action:@selector(acceptFriendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     }
     else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.addFriendButton.hidden = NO;
+        cell = [tableView dequeueReusableCellWithIdentifier:UserCellID forIndexPath:indexPath];
+        // Add target action to button
+        [cell.actionButton addTarget:self action:@selector(addFriendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     }
     
+    [cell setupWithUser:user];
+    
     // Set the index path for later refence when the button is tapped.
-    cell.addFriendButton.indexPath = indexPath;
+    cell.actionButton.indexPath = indexPath;
     
     return cell;
 }
@@ -116,6 +112,33 @@ static NSString * const CellID = @"UserCell";
             }
             else {
                 [SVProgressHUD dismiss];
+                [self presentViewController:[UIAlertController alertControllerWithError:error] animated:YES completion:nil];
+            }
+        }];
+    }
+}
+
+- (void)acceptFriendButtonTapped:(id)sender {
+    if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
+        // Get the index path from the button
+        UIButton *button = sender;
+        ACUser *addedFriend = self.allUsers[button.indexPath.row];
+        
+        [SVProgressHUD showWithStatus:@"Accepting friend"];
+        [ACSocialAPIService acceptFriend:addedFriend completion:^(BOOL success, NSError *error) {
+            if(success) {
+                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"Friends with %@", addedFriend.name]];
+                
+                addedFriend.friendRequestStatus = ACFriendRequestStatusAccepted;
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                
+                if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
+                    [self.delegate vcUserList:self didAddFriend:addedFriend];
+                }
+            }
+            else {
+                [SVProgressHUD dismiss];
+                [self presentViewController:[UIAlertController alertControllerWithError:error] animated:YES completion:nil];
             }
         }];
     }

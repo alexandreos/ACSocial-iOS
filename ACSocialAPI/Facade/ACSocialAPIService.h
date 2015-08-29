@@ -26,7 +26,7 @@
 
 + (AFHTTPRequestOperation *)acceptFriend:(ACUser *)friendUser completion:(void (^)(BOOL success, NSError *error))completion;
 
-+ (AFHTTPRequestOperation *)friendInvitedWithCompletion:(void (^)(NSArray *inviteDicts, NSError *error))completion;
-+ (AFHTTPRequestOperation *)friedRequestsReceivedWithCompletion:(void (^)(NSArray *requestDicts, NSError *error))completion;
++ (AFHTTPRequestOperation *)friendInvitedWithCompletion:(void (^)(NSArray *friendInvitesSent, NSError *error))completion;
++ (AFHTTPRequestOperation *)friedRequestsReceivedWithCompletion:(void (^)(NSArray *friendRequestsReceived, NSError *error))completion;
 
 @end

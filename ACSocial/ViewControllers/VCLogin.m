@@ -9,11 +9,14 @@
 #import "VCLogin.h"
 #import "ACSocialAPI.h"
 #import <SVProgressHUD.h>
+#import "UIAlertController+Error.h"
+#import "ACSocialStyle.h"
 
 @interface VCLogin () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
 
 @end
 
@@ -26,13 +29,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+
+    self.title = @"ACSocial";
+    
+    [self.loginButton applyPrimaryStyle];
 }
 
 #pragma mark - UI Actions
 
 - (IBAction)loginButtonTapped:(id)sender {
+    // Dismiss keyboard
+    [self.emailTextField resignFirstResponder];
+    [self.passwordTextField resignFirstResponder];
     
+    // Present HUD
     [SVProgressHUD show];
+    
+    // Make login request
     [ACSocialAPIService loginWithUsername:self.emailTextField.text password:self.passwordTextField.text completion:^(BOOL success, NSError *error) {
         if(success) {
             // Load current user
@@ -45,25 +58,16 @@
                     }
                 }
                 else {
-                    [self showAlertWithError:error];
+                    [self presentViewController:[UIAlertController alertControllerWithError:error] animated:YES completion:nil];
                 }
             }];
         }
         else {
             [SVProgressHUD dismiss];
-            [self showAlertWithError:error];
+            [self presentViewController:[UIAlertController alertControllerWithError:error] animated:YES completion:nil];
         }
 
     }];
-}
-
-#pragma mark - Private Method
-
-- (void)showAlertWithError:(NSError *)error {
-    // Some error happened, let's display an alert
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops" message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate
