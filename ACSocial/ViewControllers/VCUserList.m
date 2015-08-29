@@ -31,11 +31,29 @@ static NSString * const FriendInviteCellID = @"FriendInviteCellID";
     
     self.title = @"All Users";
     
-    [SVProgressHUD show];
+    self.refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectZero];
+    [self.refreshControl addTarget:self action:@selector(loadData) forControlEvents:UIControlEventValueChanged];
+    
+    [self.refreshControl beginRefreshing];
+    [self loadData];
+}
+
+#pragma mark - Data Loading
+
+- (void)loadData {
     // Load users from the REST API
     [ACSocialAPIService getAllUsersWithStatusAndCompletion:^(NSArray *allUsers, NSError *error) {
-        [SVProgressHUD dismiss];
+        [self.refreshControl endRefreshing];
         if(allUsers) {
+            // Check which friends are friends already
+            NSArray *currentFriends = [ACUser currentUser].friends;
+            for (ACUser *friend in currentFriends) {
+                ACUser *user = [[allUsers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(ACUser *u, NSDictionary *bindings) {
+                    return [friend.identifier isEqualToString:u.identifier];
+                }]] firstObject];
+                user.friendRequestStatus = ACFriendRequestStatusAccepted;
+            }
+            
             self.allUsers = allUsers;
             [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
@@ -66,11 +84,18 @@ static NSString * const FriendInviteCellID = @"FriendInviteCellID";
     ACUser *user = self.allUsers[indexPath.row];
 
     UserCell *cell = nil;
-    if(user.friendRequestStatus == ACFriendRequestStatusReceived) {
+    if(user.friendRequestStatus == ACFriendRequestStatusReceived ||
+       user.friendRequestStatus == ACFriendRequestStatusAccepted) {
         cell = [tableView dequeueReusableCellWithIdentifier:FriendInviteCellID forIndexPath:indexPath];
 
-        // Add target action to button
-        [cell.actionButton addTarget:self action:@selector(acceptFriendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        if(user.friendRequestStatus == ACFriendRequestStatusReceived) {
+            // Add target action to button
+            [cell.actionButton addTarget:self action:@selector(acceptFriendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        else {
+            // Add target action to button
+            [cell.actionButton addTarget:self action:@selector(unfriendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        }
     }
     else {
         cell = [tableView dequeueReusableCellWithIdentifier:UserCellID forIndexPath:indexPath];
@@ -93,7 +118,7 @@ static NSString * const FriendInviteCellID = @"FriendInviteCellID";
 }
 
 - (void)addFriendButtonTapped:(id)sender {
-    if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
+    if([self.delegate respondsToSelector:@selector(vcUserList:didUpdateFriend:)]) {
         // Get the index path from the button
         UIButton *button = sender;
         ACUser *addedFriend = self.allUsers[button.indexPath.row];
@@ -106,8 +131,33 @@ static NSString * const FriendInviteCellID = @"FriendInviteCellID";
                 addedFriend.friendRequestStatus = ACFriendRequestStatusSent;
                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
                 
-                if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
-                    [self.delegate vcUserList:self didAddFriend:addedFriend];
+                if([self.delegate respondsToSelector:@selector(vcUserList:didUpdateFriend:)]) {
+                    [self.delegate vcUserList:self didUpdateFriend:addedFriend];
+                }
+            }
+            else {
+                [SVProgressHUD dismiss];
+                [self presentViewController:[UIAlertController alertControllerWithError:error] animated:YES completion:nil];
+            }
+        }];
+    }
+}
+
+- (void)unfriendButtonTapped:(id)sender {
+    if([self.delegate respondsToSelector:@selector(vcUserList:didUpdateFriend:)]) {
+        // Get the index path from the button
+        UIButton *button = sender;
+        ACUser *addedFriend = self.allUsers[button.indexPath.row];
+        
+        [SVProgressHUD showWithStatus:@"Removing friend"];
+        [ACSocialAPIService inviteFriend:addedFriend completion:^(BOOL success, NSError *error) {
+            if(success) {
+                [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"Removed friendship with %@", addedFriend.name]];
+                
+                [self loadData];
+                
+                if([self.delegate respondsToSelector:@selector(vcUserList:didUpdateFriend:)]) {
+                    [self.delegate vcUserList:self didUpdateFriend:addedFriend];
                 }
             }
             else {
@@ -119,7 +169,7 @@ static NSString * const FriendInviteCellID = @"FriendInviteCellID";
 }
 
 - (void)acceptFriendButtonTapped:(id)sender {
-    if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
+    if([self.delegate respondsToSelector:@selector(vcUserList:didUpdateFriend:)]) {
         // Get the index path from the button
         UIButton *button = sender;
         ACUser *addedFriend = self.allUsers[button.indexPath.row];
@@ -132,8 +182,8 @@ static NSString * const FriendInviteCellID = @"FriendInviteCellID";
                 addedFriend.friendRequestStatus = ACFriendRequestStatusAccepted;
                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
                 
-                if([self.delegate respondsToSelector:@selector(vcUserList:didAddFriend:)]) {
-                    [self.delegate vcUserList:self didAddFriend:addedFriend];
+                if([self.delegate respondsToSelector:@selector(vcUserList:didUpdateFriend:)]) {
+                    [self.delegate vcUserList:self didUpdateFriend:addedFriend];
                 }
             }
             else {

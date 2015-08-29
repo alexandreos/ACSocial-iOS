@@ -21,6 +21,14 @@
 - (void)setupWithUser:(ACUser *)user {
     [super setupWithUser:user];
 
+    if(user.friendRequestStatus == ACFriendRequestStatusAccepted) {
+        // Unfriend button
+        [self.actionButton setTitle:@"Unfriend" forState:UIControlStateNormal];
+    }
+    else if(user.friendRequestStatus == ACFriendRequestStatusReceived) {
+        // Accept button
+        [self.actionButton setTitle:@"Accept" forState:UIControlStateNormal];
+    }
     self.accessoryType = UITableViewCellAccessoryNone;
     self.actionButton.hidden = NO;
 }

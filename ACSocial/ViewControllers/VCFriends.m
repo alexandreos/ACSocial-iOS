@@ -42,6 +42,9 @@ typedef NS_ENUM(NSUInteger, VCFriendsSections) {
     
     self.title = @"My Friends";
     
+    self.tableView.estimatedRowHeight = 50.0;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectZero];
     [self.refreshControl addTarget:self action:@selector(loadData) forControlEvents:UIControlEventValueChanged];
 }
@@ -176,7 +179,7 @@ typedef NS_ENUM(NSUInteger, VCFriendsSections) {
 
 #pragma mark - VCUserListDelegate
 
-- (void)vcUserList:(VCUserList *)vcUserList didAddFriend:(NSString *)friendName {
+- (void)vcUserList:(VCUserList *)vcUserList didUpdateFriend:(NSString *)friendName {
     // Reload data after inviting/accepting a friend
     [self loadFriends];
     [self loadRequestsReceived];

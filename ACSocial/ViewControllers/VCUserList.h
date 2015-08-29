@@ -15,7 +15,7 @@
 
 @optional
 
-- (void)vcUserList:(VCUserList *)vcUserList didAddFriend:(ACUser *)addedFriend;
+- (void)vcUserList:(VCUserList *)vcUserList didUpdateFriend:(ACUser *)updatedFriend;
 
 @end
 

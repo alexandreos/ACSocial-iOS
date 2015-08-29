@@ -140,7 +140,7 @@
         <scene sceneID="NIh-dQ-Sk8">
             <objects>
                 <tableViewController id="Dhd-XP-CGi" customClass="VCFriends" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" id="raO-1i-71q">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="raO-1i-71q">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -165,7 +165,9 @@
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="10c-dj-BlC" firstAttribute="top" secondItem="nR1-2G-1t3" secondAttribute="top" constant="5" id="2Xd-pE-qnb"/>
                                         <constraint firstAttribute="centerY" secondItem="10c-dj-BlC" secondAttribute="centerY" id="GAi-Id-FZh"/>
+                                        <constraint firstAttribute="bottom" secondItem="10c-dj-BlC" secondAttribute="bottom" constant="5" id="Ium-HJ-kv7"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="TiQ-Oz-Nlu" secondAttribute="trailing" constant="10" id="MWB-0L-zZW"/>
                                         <constraint firstItem="TiQ-Oz-Nlu" firstAttribute="leading" secondItem="10c-dj-BlC" secondAttribute="trailing" constant="8" id="QIj-2W-K1m"/>
                                         <constraint firstAttribute="centerY" secondItem="TiQ-Oz-Nlu" secondAttribute="centerY" id="SFm-13-uFy"/>
@@ -209,9 +211,11 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="centerY" secondItem="Tmu-qd-6yV" secondAttribute="centerY" id="3Ae-PY-0mz"/>
+                                        <constraint firstItem="mDa-B3-AaP" firstAttribute="top" secondItem="gtK-U8-U5j" secondAttribute="top" constant="11" id="4th-tH-1nB"/>
                                         <constraint firstItem="j97-0O-o1b" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Tmu-qd-6yV" secondAttribute="trailing" constant="10" id="AAm-Te-1A4"/>
                                         <constraint firstAttribute="centerY" secondItem="mDa-B3-AaP" secondAttribute="centerY" id="CFU-h2-P7Z"/>
                                         <constraint firstItem="Tmu-qd-6yV" firstAttribute="leading" secondItem="mDa-B3-AaP" secondAttribute="trailing" constant="10" id="Cjd-wi-CUf"/>
+                                        <constraint firstAttribute="bottom" secondItem="mDa-B3-AaP" secondAttribute="bottom" constant="11" id="YX4-6n-Cvw"/>
                                         <constraint firstAttribute="centerY" secondItem="j97-0O-o1b" secondAttribute="centerY" id="jGA-rb-XUf"/>
                                         <constraint firstItem="mDa-B3-AaP" firstAttribute="leading" secondItem="gtK-U8-U5j" secondAttribute="leading" constant="15" id="r62-VZ-zge"/>
                                         <constraint firstAttribute="trailing" secondItem="j97-0O-o1b" secondAttribute="trailing" constant="15" id="vL1-DG-aX7"/>
