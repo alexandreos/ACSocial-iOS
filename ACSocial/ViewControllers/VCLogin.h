@@ -13,6 +13,12 @@
 
 @protocol VCLoginDelegate <NSObject>
 
+/**
+ Notify the delegate of the login event.
+ 
+ @param vcLogin The login view controller.
+ @param user    The signed-in user.
+ */
 - (void)vcLogin:(VCLogin *)vcLogin didLoginUser:(ACUser *)user;
 
 @end
@@ -21,6 +27,11 @@
 
 @property (nonatomic, weak) id<VCLoginDelegate> delegate;
 
+/**
+ Create a new instance of the view controller from the VCLogin.xib file.
+ 
+ @return The created instance.
+ */
 + (instancetype)instanceFromNib;
 
 @end

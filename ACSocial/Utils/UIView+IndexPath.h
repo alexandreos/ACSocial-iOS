@@ -10,6 +10,9 @@
 
 @interface UIView (IndexPath)
 
+/**
+ The index path reference of the view.
+ */
 @property (nonatomic) NSIndexPath *indexPath;
 
 @end

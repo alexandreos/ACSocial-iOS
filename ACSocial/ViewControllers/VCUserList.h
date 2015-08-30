@@ -15,6 +15,12 @@
 
 @optional
 
+/**
+ Notify the delegate of the updated friend.
+ 
+ @param vcUserList    The user list view controller.
+ @param updatedFriend The updated friend object.
+ */
 - (void)vcUserList:(VCUserList *)vcUserList didUpdateFriend:(ACUser *)updatedFriend;
 
 @end

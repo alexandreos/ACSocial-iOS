@@ -10,6 +10,13 @@
 
 @interface UIAlertController (Error)
 
+/**
+ Create a new instance of an alert controller with the given error object.
+ 
+ @param error The error object to be used.
+ 
+ @return A new instance of the alert controller with the error localized description as a message.
+ */
 + (instancetype)alertControllerWithError:(NSError *)error;
 
 @end
